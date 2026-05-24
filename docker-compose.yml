@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: invoice-automation-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: invoice_admin
+      POSTGRES_PASSWORD: dev_password_change_me
+      POSTGRES_DB: invoice_automation
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U invoice_admin -d invoice_automation"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
