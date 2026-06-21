@@ -4,7 +4,7 @@ Automated invoice generation, approval workflow, and delivery system. Built init
 
 ## 🔗 Live demo
 
-**https://YOUR-RENDER-URL.onrender.com** — _replace with the deployed URL after Phase 2 (see [Deploy](#deploy)). No login required._
+**https://invoice-automation-qyo2.onrender.com** — live on Render, no login required. _(Free tier: first load after idle can take ~50s to wake up.)_
 
 Open the app → **Invoices** → upload a logo, fill in your business + client details and line items → watch the live preview → **Download PDF**.
 
