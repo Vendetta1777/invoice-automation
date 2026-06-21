@@ -1,0 +1,24 @@
+# Render Blueprint — one click deploys the web service + Postgres.
+# In Render: New → Blueprint → connect this repo → Apply.
+services:
+  - type: web
+    name: invoice-automation
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: invoice-automation-db
+          property: connectionString
+      # Demo is open (no login). "*" allows the SPA to call its own API.
+      - key: FRONTEND_ORIGIN
+        value: "*"
+
+databases:
+  - name: invoice-automation-db
+    plan: free
+    databaseName: invoice_automation
+    user: invoice_admin

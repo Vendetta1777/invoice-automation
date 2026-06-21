@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,20 @@ class Settings(BaseSettings):
     )
 
     database_url: str = "postgresql+psycopg2://invoice_admin:dev_password_change_me@localhost:5432/invoice_automation"
+
+    # Directory of the built React app to serve in production (set in Docker/Render).
+    static_dir: str = ""
+
+    @field_validator("database_url")
+    @classmethod
+    def _normalize_db_url(cls, value: str) -> str:
+        # Managed hosts (Render/Railway) often hand out "postgres://..." which
+        # SQLAlchemy 2.0 no longer accepts; pin the psycopg2 driver.
+        if value.startswith("postgres://"):
+            return value.replace("postgres://", "postgresql+psycopg2://", 1)
+        if value.startswith("postgresql://"):
+            return value.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return value
 
     jwt_secret_key: str = "change-me"
     jwt_algorithm: str = "HS256"
