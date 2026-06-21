@@ -23,14 +23,30 @@ class Invoice(Base):
     __tablename__ = "invoices"
 
     invoice_number: Mapped[str] = mapped_column(String(64), unique=True, index=True, nullable=False)
-    client_id: Mapped[int] = mapped_column(ForeignKey("clients.id"), nullable=False)
-    created_by_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+
+    # Optional links — for the demo invoices are created ad-hoc without a
+    # pre-existing client record or an authenticated user.
+    client_id: Mapped[int | None] = mapped_column(ForeignKey("clients.id"), nullable=True)
+    created_by_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
 
     status: Mapped[InvoiceStatus] = mapped_column(
         Enum(InvoiceStatus, name="invoice_status"),
         nullable=False,
         default=InvoiceStatus.DRAFT,
     )
+
+    # Sender / business identity (entered in-app, not from env).
+    sender_name: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+    sender_address: Mapped[str | None] = mapped_column(Text, nullable=True)
+    sender_email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    sender_phone: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    logo_data_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    # Inline client snapshot (ad-hoc, no client record required).
+    client_name: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+    client_email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    client_address: Mapped[str | None] = mapped_column(Text, nullable=True)
+    client_phone: Mapped[str | None] = mapped_column(String(64), nullable=True)
 
     issue_date: Mapped[date] = mapped_column(Date, nullable=False)
     due_date: Mapped[date] = mapped_column(Date, nullable=False)
