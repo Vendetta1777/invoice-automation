@@ -1,0 +1,10 @@
+M0 — Discovery (no coding needed; v0.1 builder already live as a generic demo)
+
+Done when:
+  1. DISCOVERY.md is filled in with the business owner (stays local — gitignored)
+  2. One real invoice is saved as samples/original-invoice-1.pdf (stays local — gitignored)
+  3. The FTA mandatory-fields checklist at the bottom of DISCOVERY.md is ticked against that sample
+  4. Minutes-to-make-one-invoice baseline is captured (it's the M3 "time saved" yardstick)
+
+Next: M1 — make the live builder reproduce the business's real invoice exactly (FTA checklist passing).
+Plan summary: MILESTONES.md (public) · full build plan: BUILD-PLAN.pdf (local-only, never commit)

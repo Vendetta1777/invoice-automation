@@ -1,3 +1,13 @@
+# ── PRIVATE BUSINESS DATA — never commit to this public repo ──
+# The filled discovery doc, real invoices, and invoice data contain the
+# business's trade license, TRN, bank details, and customer information.
+# The build plan PDF names real people. All of it stays local-only.
+DISCOVERY.md
+BUILD-PLAN.pdf
+samples/
+outputs/
+data/
+
 # Environments
 .env
 .env.local

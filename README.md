@@ -1,6 +1,7 @@
 # invoice-automation
 
-Automated invoice generation, approval workflow, and delivery system. Built initially for a single small business, designed to extend to multi-tenant SaaS.
+Automated invoice generation, approval workflow, and delivery for a real small business — designed
+to extend to multi-tenant SaaS later.
 
 ## 🔗 Live demo
 
@@ -24,13 +25,23 @@ Endpoints: `POST /api/invoices/`, `GET /api/invoices/`, `GET /api/invoices/{id}`
 
 Approval workflow, email delivery, and auth remain stubbed (see [Roadmap](#roadmap)).
 
-## What it does
+## 🧭 What's next: grounding v0.1 in the real business
 
-- **Generates PDF invoices** from client + line-item data
-- **Routes invoices for approval** before they go out — a superior signs off before any invoice is sent
-- **Emails invoices** to clients automatically once approved
-- **Stores everything** (clients, invoices, approvals, payment status) in PostgreSQL
-- **Web dashboard** to manage clients, draft invoices, see approval queue, and track payment status
+v0.1 is a **generic** invoice builder. The product it needs to become is defined by the real
+business it's for — so the current milestone is **discovery** ([`MILESTONES.md`](MILESTONES.md),
+`CURRENT-MILESTONE.txt`): interview the owner, capture a real invoice as the reference sample,
+measure the manual baseline, then make the builder reproduce that invoice exactly — including the
+mandatory UAE FTA tax-invoice fields ("Tax Invoice" title, supplier/customer TRN and address,
+per-line VAT in AED, discounts shown) that a generic tax-rate field doesn't cover.
+
+Two standing rules:
+
+- **E-invoicing-ready by design** — invoices live as structured data first, and the PDF is just one
+  renderer of it. UAE e-invoicing (Peppol PINT AE via an Accredited Service Provider) becomes
+  mandatory for B2B/B2G businesses of every size by **1 July 2027**, so the data model maps to
+  that; an ASP integration later is a small step, not a rewrite.
+- **Real business data never enters this public repo** — the filled discovery doc, sample invoices,
+  and invoice data are gitignored.
 
 ## Stack
 
@@ -49,8 +60,9 @@ invoice-automation/
 │   │   ├── models/       SQLAlchemy ORM models
 │   │   ├── schemas/      Pydantic request/response schemas
 │   │   ├── routers/      API endpoints (auth, clients, invoices, approvals)
-│   │   ├── services/     PDF generation, email sending, approval workflow
+│   │   ├── services/     PDF generation, invoice math, email sending, approval workflow
 │   │   └── core/         Security helpers (JWT, password hashing)
+│   ├── migrations/   Alembic schema migrations
 │   └── tests/
 ├── frontend/         React + Vite + TypeScript dashboard
 │   └── src/
@@ -116,11 +128,15 @@ New Project → Deploy from GitHub repo (uses the `Dockerfile`) → add a **Post
 
 ## Roadmap
 
+Business-validation milestones (discovery → real invoice → real use → SaaS) live in
+[`MILESTONES.md`](MILESTONES.md); the feature roadmap below tracks the software side.
+
 **v0.1 — Core workflow (in progress)**
 - [x] Invoice builder: in-app branding/logo, inline client, line items, tax, currency
 - [x] Server-side totals + PDF generation (ReportLab)
 - [x] Persist invoices to Postgres + list on dashboard
 - [x] Deployable single-service build (Docker) for a public demo
+- [ ] FTA-compliant UAE tax-invoice layout (after M0 discovery: "Tax Invoice" title, TRNs, per-line VAT in AED)
 - [ ] Auth + roles (admin, accountant, approver)
 - [ ] Approval queue + email-on-approval
 - [ ] Email delivery to client
